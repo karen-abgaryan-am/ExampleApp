@@ -13,13 +13,3 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/about', function () {
-    return view('about');
-});
-
-Route::post('/products', [ProductController::class, 'store']);

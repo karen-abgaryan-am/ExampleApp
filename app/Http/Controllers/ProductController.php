@@ -2,25 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
+use App\Http\Resources\ProductResource;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use App\Models\Product;
 
 class ProductController extends Controller
 {
-    public function store(Request $request) : JsonResponse
+    public function store(ProductRequest $request) : ProductResource
     {
-        $product_array = [
-            "name" => $request->header('name'),
-            "price" => $request->header('price'),
-            "stock" => $request->header('stock'),
-        ];
+        $product = Product::create([
+            "name" => $request->get('name'),
+            "price" => $request->get('price'),
+            "stock" => $request->get('stock'),
+        ]);
 
-        $product = Product::create($product_array);
-
-        return response()->json([
-            'message' => 'Product created successfully',
-            'product' => $product
-        ], 201);
+        return new ProductResource($product);
     }
 }
