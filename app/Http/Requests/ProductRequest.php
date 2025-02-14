@@ -6,25 +6,60 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ProductRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+    private const NAME = 'name';
+    private const DESCRIPTION = 'description';
+    private const PRICE = 'price';
+    private const STOCK = 'stock';
+
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            "name" => "required|string|min:3|max:255",
-            "price" => "required|numeric|min:0",
-            "stock" => "required|numeric",
+            self::NAME => [
+                'required',
+                'string',
+                'min:2',
+                'max:64',
+            ],
+            self::DESCRIPTION => [
+                'required',
+                'string',
+                'min:2',
+                'max:2048',
+            ],
+            self::PRICE => [
+                'required',
+                'numeric',
+                'min:0',
+            ],
+            self::STOCK => [
+                'required',
+                'numeric',
+            ],
         ];
+    }
+
+    public function getName(): string
+    {
+        return $this->get(self::NAME);
+    }
+
+    public function getDescription(): string
+    {
+        return $this->get(self::DESCRIPTION);
+    }
+
+    public function getPrice(): string
+    {
+        return $this->get(self::PRICE);
+    }
+
+    public function getStock(): string
+    {
+        return $this->get(self::STOCK);
     }
 }

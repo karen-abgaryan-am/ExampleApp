@@ -4,19 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductResource;
-use Illuminate\Http\JsonResponse;
-use App\Models\Product;
+use App\Services\Actions\Product\ProductStoreAction;
+use App\Services\DTO\Product\ProductDTO;
 
 class ProductController extends Controller
 {
-    public function store(ProductRequest $request) : ProductResource
+    public function store(ProductRequest $request, ProductStoreAction $action): ProductResource
     {
-        $product = Product::create([
-            "name" => $request->get('name'),
-            "price" => $request->get('price'),
-            "stock" => $request->get('stock'),
-        ]);
-
-        return new ProductResource($product);
+        $dto = new ProductDTO($request);
+        return $action->run($dto);
     }
 }
