@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Services\DTO\Product\ProductDTO;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
@@ -21,6 +22,11 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = ["name", "description", "price", "stock"];
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
 
     public static function create(ProductDTO $dto): self
     {

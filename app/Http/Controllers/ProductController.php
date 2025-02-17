@@ -12,6 +12,7 @@ class ProductController extends Controller
     public function store(ProductRequest $request, ProductStoreAction $action): ProductResource
     {
         $dto = new ProductDTO($request);
+
         return $action->run($dto);
     }
 }

@@ -7,5 +7,5 @@ use App\Services\DTO\Product\ProductDTO;
 
 interface ProductWriteRepositoryInterface
 {
-    public function store(ProductDTO $dto) : Product;
+    public function store(ProductDTO $dto): Product;
 }
