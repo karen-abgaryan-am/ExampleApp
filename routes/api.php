@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Categories\CategoryController;
+use App\Http\Controllers\Products\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
-Route::post('/product', [ProductController::class, 'store']);
-
-Route::post('/category', [CategoryController::class, 'store']);
+Route::prefix('/admin')->group(function () {
+    Route::post('/category', [CategoryController::class, 'store']);
+    Route::post('/product', [ProductController::class, 'store']);
+});

@@ -1,16 +1,25 @@
 <?php
 namespace App\Repositories\Write\Category;
 
+use App\Exceptions\SavingErrorException;
 use App\Models\Category;
-use App\Services\DTO\Category\CategoryDTO;
+use App\Services\Category\DTO\CategoryDTO;
+use Illuminate\Support\Collection;
 
 class CategoryWriteRepository implements CategoryWriteRepositoryInterface
 {
-    public function store(CategoryDTO $dto): Category
+    /**
+     * @throws SavingErrorException
+     */
+    public function create(CategoryDTO $dto): Collection
     {
         $entity = Category::create($dto);
-        $entity->save();
 
-        return $entity;
+        if (!$entity->save())
+        {
+            throw new SavingErrorException();
+        }
+
+        return collect($entity);
     }
 }

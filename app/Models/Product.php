@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use App\Services\DTO\Product\ProductDTO;
+use App\Services\Product\DTO\ProductDTO;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @property int $id
@@ -23,18 +24,18 @@ class Product extends Model
 
     protected $fillable = ["name", "description", "price", "stock"];
 
-    public function category(): BelongsTo
+    public function category(): BelongsToMany
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class);
     }
 
     public static function create(ProductDTO $dto): self
     {
         $entity = new self();
-        $entity->name = $dto->name;
-        $entity->description = $dto->description;
-        $entity->price = $dto->price;
-        $entity->stock = $dto->stock;
+        $entity->name = $dto->getName();
+        $entity->description = $dto->getDescription();
+        $entity->price = $dto->getPrice();
+        $entity->stock = $dto->getStock();
 
         return $entity;
     }

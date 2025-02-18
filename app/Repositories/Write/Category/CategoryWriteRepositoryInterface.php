@@ -1,10 +1,10 @@
 <?php
 namespace App\Repositories\Write\Category;
 
-use App\Models\Category;
-use App\Services\DTO\Category\CategoryDTO;
+use App\Services\Category\DTO\CategoryDTO;
+use Illuminate\Support\Collection;
 
 interface CategoryWriteRepositoryInterface
 {
-    public function store(CategoryDTO $dto): Category;
+    public function create(CategoryDTO $dto): Collection;
 }

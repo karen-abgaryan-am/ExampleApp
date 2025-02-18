@@ -2,16 +2,25 @@
 
 namespace App\Repositories\Write\Product;
 
+use App\Exceptions\SavingErrorException;
 use App\Models\Product;
-use App\Services\DTO\Product\ProductDTO;
+use App\Services\Product\DTO\ProductDTO;
+use Illuminate\Support\Collection;
 
 class ProductWriteRepository implements ProductWriteRepositoryInterface
 {
-    public function store(ProductDTO $dto): Product
+    /**
+     * @throws SavingErrorException
+     */
+    public function create(ProductDTO $dto): Collection
     {
         $entity = Product::create($dto);
-        $entity->save();
 
-        return $entity;
+        if (!$entity->save())
+        {
+            throw new SavingErrorException();
+        }
+
+        return collect($entity);
     }
 }

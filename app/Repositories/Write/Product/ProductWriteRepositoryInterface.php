@@ -2,10 +2,10 @@
 
 namespace App\Repositories\Write\Product;
 
-use App\Models\Product;
-use App\Services\DTO\Product\ProductDTO;
+use App\Services\Product\DTO\ProductDTO;
+use Illuminate\Support\Collection;
 
 interface ProductWriteRepositoryInterface
 {
-    public function store(ProductDTO $dto): Product;
+    public function create(ProductDTO $dto): Collection;
 }
