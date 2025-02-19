@@ -5,7 +5,7 @@ namespace App\Services\Product\Actions;
 use App\Repositories\Read\Product\ProductReadRepositoryInterface;
 use Illuminate\Support\Collection;
 
-class GetProductsByIdAction
+class GetProductByIdAction
 {
     public function __construct(private readonly ProductReadRepositoryInterface $productReadRepository)
     {

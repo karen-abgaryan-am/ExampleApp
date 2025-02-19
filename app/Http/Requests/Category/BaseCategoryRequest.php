@@ -4,10 +4,11 @@ namespace App\Http\Requests\Category;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CategoryRequest extends FormRequest
+class BaseCategoryRequest extends FormRequest
 {
     private const NAME = 'name';
     private const SLUG = 'slug';
+    private const PARENT_ID = 'parent_id';
 
     public function authorize(): bool
     {
@@ -28,6 +29,10 @@ class CategoryRequest extends FormRequest
                 'string',
                 'min:2',
                 'max:16',
+            ],
+            self::PARENT_ID => [
+                // TODO: Add validation to check if raw with id=parent_id has parent_id=null
+                'integer',
             ]
         ];
     }
@@ -40,5 +45,10 @@ class CategoryRequest extends FormRequest
     public function getSlug(): string
     {
         return $this->get(self::SLUG);
+    }
+
+    public function getParentId(): ?int
+    {
+        return $this->get(self::PARENT_ID);
     }
 }

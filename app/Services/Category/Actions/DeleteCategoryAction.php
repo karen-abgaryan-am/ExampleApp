@@ -3,17 +3,15 @@
 namespace App\Services\Category\Actions;
 
 use App\Repositories\Write\Category\CategoryWriteRepositoryInterface;
-use App\Services\Category\DTO\CategoryDTO;
-use Illuminate\Support\Collection;
 
-class CategoryStoreAction
+class DeleteCategoryAction
 {
     public function __construct(private readonly CategoryWriteRepositoryInterface $categoryWriteRepository)
     {
     }
 
-    public function run(CategoryDTO $dto): Collection
+    public function run(int $id): bool
     {
-        return $this->categoryWriteRepository->create($dto);
+        return $this->categoryWriteRepository->delete($id);
     }
 }

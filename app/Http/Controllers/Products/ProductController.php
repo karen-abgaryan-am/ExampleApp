@@ -10,7 +10,7 @@ use App\Http\Resources\Product\ProductResource;
 use App\Services\Product\Actions\CreateProductAction;
 use App\Services\Product\Actions\DeleteProductAction;
 use App\Services\Product\Actions\GetAllProductsAction;
-use App\Services\Product\Actions\GetProductsByIdAction;
+use App\Services\Product\Actions\GetProductByIdAction;
 use App\Services\Product\Actions\UpdateProductAction;
 use App\Services\Product\DTO\CreateProductDTO;
 use App\Services\Product\DTO\UpdateProductDTO;
@@ -25,7 +25,7 @@ class ProductController extends Controller
         return new ProductCollection($products);
     }
 
-    public function show(int $id, GetProductsByIdAction $action): ProductResource
+    public function show(int $id, GetProductByIdAction $action): ProductResource
     {
         $product = $action->run($id);
 
@@ -51,10 +51,11 @@ class ProductController extends Controller
     public function destroy(int $id, DeleteProductAction $action): JsonResponse
     {
         $success = $action->run($id);
+        $statusCode = $success ? 200 : 500;
 
         return response()->json([
             'success' => $success,
             'message' => $success ? 'Product deleted successfully.' : 'Something went wrong. Please try again.'
-        ]);
+        ], $statusCode);
     }
 }

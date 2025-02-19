@@ -25,6 +25,9 @@ class ProductWriteRepository implements ProductWriteRepositoryInterface
         return collect($entity);
     }
 
+    /**
+     * @throws SavingErrorException
+     */
     public function update(UpdateProductDTO $dto): Collection
     {
         $entity = Product::findOrFail($dto->getId());
@@ -42,10 +45,12 @@ class ProductWriteRepository implements ProductWriteRepositoryInterface
     {
         $entity = Product::find($id);
 
-        if (!$entity->delete())
+        if (!$entity)
         {
             return false;
         }
+
+        $entity->delete();
 
         return true;
     }
