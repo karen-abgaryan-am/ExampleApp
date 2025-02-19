@@ -3,17 +3,17 @@
 namespace App\Services\Product\Actions;
 
 use App\Repositories\Write\Product\ProductWriteRepositoryInterface;
-use App\Services\Product\DTO\ProductDTO;
+use App\Services\Product\DTO\UpdateProductDTO;
 use Illuminate\Support\Collection;
 
-class ProductStoreAction
+class UpdateProductAction
 {
     public function __construct(private readonly ProductWriteRepositoryInterface $productWriteRepository)
     {
     }
 
-    public function run(ProductDTO $dto): Collection
+    public function run(UpdateProductDTO $dto): Collection
     {
-        return $this->productWriteRepository->create($dto);
+        return $this->productWriteRepository->update($dto);
     }
 }

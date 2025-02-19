@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\Category\DTO;
 
-use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\Category\CategoryRequest;
 
 class CategoryDTO
 {

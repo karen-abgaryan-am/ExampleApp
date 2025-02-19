@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Categories;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CategoryRequest;
-use App\Http\Resources\CategoryResource;
+use App\Http\Requests\Category\CategoryRequest;
+use App\Http\Resources\Category\CategoryResource;
 use App\Services\Category\Actions\CategoryStoreAction;
 use App\Services\Category\DTO\CategoryDTO;
 

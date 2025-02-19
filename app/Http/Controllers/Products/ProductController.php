@@ -3,18 +3,58 @@
 namespace App\Http\Controllers\Products;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ProductRequest;
-use App\Http\Resources\ProductResource;
-use App\Services\Product\Actions\ProductStoreAction;
-use App\Services\Product\DTO\ProductDTO;
+use App\Http\Requests\Product\CreateProductRequest;
+use App\Http\Requests\Product\UpdateProductRequest;
+use App\Http\Resources\Product\ProductCollection;
+use App\Http\Resources\Product\ProductResource;
+use App\Services\Product\Actions\CreateProductAction;
+use App\Services\Product\Actions\DeleteProductAction;
+use App\Services\Product\Actions\GetAllProductsAction;
+use App\Services\Product\Actions\GetProductsByIdAction;
+use App\Services\Product\Actions\UpdateProductAction;
+use App\Services\Product\DTO\CreateProductDTO;
+use App\Services\Product\DTO\UpdateProductDTO;
+use Illuminate\Http\JsonResponse;
 
 class ProductController extends Controller
 {
-    public function store(ProductRequest $request, ProductStoreAction $action): ProductResource
+    public function index(GetAllProductsAction $action): ProductCollection
     {
-        $dto = new ProductDTO($request);
+        $products = $action->run();
+
+        return new ProductCollection($products);
+    }
+
+    public function show(int $id, GetProductsByIdAction $action): ProductResource
+    {
+        $product = $action->run($id);
+
+        return new ProductResource($product);
+    }
+
+    public function store(CreateProductRequest $request, CreateProductAction $action): ProductResource
+    {
+        $dto = new CreateProductDTO($request);
         $product = $action->run($dto);
 
         return new ProductResource($product);
+    }
+
+    public function update(UpdateProductRequest $request, UpdateProductAction $action): ProductResource
+    {
+        $dto = new UpdateProductDTO($request);
+        $product = $action->run($dto);
+
+        return new ProductResource($product);
+    }
+
+    public function destroy(int $id, DeleteProductAction $action): JsonResponse
+    {
+        $success = $action->run($id);
+
+        return response()->json([
+            'success' => $success,
+            'message' => $success ? 'Product deleted successfully.' : 'Something went wrong. Please try again.'
+        ]);
     }
 }
