@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Categories;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\CreateCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
-use App\Http\Resources\Category\CategoryCollection;
 use App\Http\Resources\Category\CategoryResource;
 use App\Services\Category\Actions\CreateCategoryAction;
 use App\Services\Category\Actions\DeleteCategoryAction;
@@ -15,14 +14,13 @@ use App\Services\Category\Actions\UpdateCategoryAction;
 use App\Services\Category\DTO\CreateCategoryDTO;
 use App\Services\Category\DTO\UpdateCategoryDTO;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Collection;
 
 class CategoryController extends Controller
 {
-    public function index(GetAllCategoriesAction $action): CategoryCollection
+    public function index(GetAllCategoriesAction $action): Collection
     {
-        $categories = $action->run();
-
-        return new CategoryCollection($categories);
+        return $action->run();
     }
 
     public function show(int $id, GetCategoryByIdAction $action): CategoryResource
@@ -51,11 +49,7 @@ class CategoryController extends Controller
     public function destroy(int $id, DeleteCategoryAction $action): JsonResponse
     {
         $success = $action->run($id);
-        $statusCode = $success ? 200 : 500;
 
-        return response()->json([
-            'success' => $success,
-            'message' => $success ? 'Category was deleted.' : 'Category was not deleted. Please try again.'
-        ], $statusCode);
+        return response()->json($success);
     }
 }

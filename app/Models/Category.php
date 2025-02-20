@@ -30,6 +30,7 @@ class Category extends Model
     public static function create(CreateCategoryDTO $dto): self
     {
         $entity = new self();
+
         $entity->name = $dto->getName();
         $entity->slug = $dto->getSlug();
         $entity->parent_id = $dto->getParentId();

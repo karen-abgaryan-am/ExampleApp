@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Products;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
-use App\Http\Resources\Product\ProductCollection;
 use App\Http\Resources\Product\ProductResource;
 use App\Services\Product\Actions\CreateProductAction;
 use App\Services\Product\Actions\DeleteProductAction;
@@ -15,14 +14,13 @@ use App\Services\Product\Actions\UpdateProductAction;
 use App\Services\Product\DTO\CreateProductDTO;
 use App\Services\Product\DTO\UpdateProductDTO;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Collection;
 
 class ProductController extends Controller
 {
-    public function index(GetAllProductsAction $action): ProductCollection
+    public function index(GetAllProductsAction $action): Collection
     {
-        $products = $action->run();
-
-        return new ProductCollection($products);
+        return $action->run();
     }
 
     public function show(int $id, GetProductByIdAction $action): ProductResource
@@ -51,11 +49,7 @@ class ProductController extends Controller
     public function destroy(int $id, DeleteProductAction $action): JsonResponse
     {
         $success = $action->run($id);
-        $statusCode = $success ? 200 : 500;
 
-        return response()->json([
-            'success' => $success,
-            'message' => $success ? 'Product deleted successfully.' : 'Something went wrong. Please try again.'
-        ], $statusCode);
+        return response()->json([$success]);
     }
 }

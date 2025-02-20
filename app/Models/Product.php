@@ -35,6 +35,7 @@ class Product extends Model
     public static function create(CreateProductDTO $dto): self
     {
         $entity = new self();
+
         $entity->name = $dto->getName();
         $entity->description = $dto->getDescription();
         $entity->price = $dto->getPrice();
