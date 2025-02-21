@@ -2,7 +2,10 @@
 
 namespace App\Repositories\Write\Product;
 
-use App\Exceptions\SavingErrorException;
+use App\Exceptions\Product\CreateProductErrorException;
+use App\Exceptions\Product\DeleteProductErrorException;
+use App\Exceptions\Product\NotFoundProductErrorException;
+use App\Exceptions\Product\UpdateProductErrorException;
 use App\Models\Product;
 use App\Services\Product\DTO\CreateProductDTO;
 use App\Services\Product\DTO\UpdateProductDTO;
@@ -11,7 +14,7 @@ use Illuminate\Support\Collection;
 class ProductWriteRepository implements ProductWriteRepositoryInterface
 {
     /**
-     * @throws SavingErrorException
+     * @throws CreateProductErrorException
      */
     public function create(CreateProductDTO $dto): Collection
     {
@@ -19,14 +22,14 @@ class ProductWriteRepository implements ProductWriteRepositoryInterface
 
         if (!$entity->save())
         {
-            throw new SavingErrorException();
+            throw new CreateProductErrorException();
         }
 
         return collect($entity);
     }
 
     /**
-     * @throws SavingErrorException
+     * @throws UpdateProductErrorException
      */
     public function update(UpdateProductDTO $dto): Collection
     {
@@ -35,22 +38,29 @@ class ProductWriteRepository implements ProductWriteRepositoryInterface
 
         if (!$entity->save())
         {
-            throw new SavingErrorException();
+            throw new UpdateProductErrorException();
         }
 
         return collect($entity);
     }
 
+    /**
+     * @throws NotFoundProductErrorException
+     * @throws DeleteProductErrorException
+     */
     public function delete(int $id): bool
     {
         $entity = Product::find($id);
 
         if (!$entity)
         {
-            return false;
+            throw new NotFoundProductErrorException();
         }
 
-        $entity->delete();
+        if (!$entity->delete())
+        {
+            throw new DeleteProductErrorException();
+        }
 
         return true;
     }

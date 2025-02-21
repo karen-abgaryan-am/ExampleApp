@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('/admin')->group(function () {
     Route::prefix('/categories')->group(function () {
-        Route::get('/', [CategoryController::class, 'index']);
+        Route::get('/page/{page}', [CategoryController::class, 'index']);
         Route::get('/{id}', [CategoryController::class, 'show']);
         Route::post('/', [CategoryController::class, 'store']);
         Route::put('/{id}', [CategoryController::class, 'update']);
@@ -30,7 +30,7 @@ Route::prefix('/admin')->group(function () {
     });
 
     Route::prefix('/products')->group(function () {
-        Route::get('/', [ProductController::class, 'index']);
+        Route::get('/page/{page}', [ProductController::class, 'index']);
         Route::get('/{id}', [ProductController::class, 'show']);
         Route::post('/', [ProductController::class, 'store']);
         Route::put('/{id}', [ProductController::class, 'update']);
@@ -38,8 +38,8 @@ Route::prefix('/admin')->group(function () {
     });
 });
 
-Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/page/{page}', [ProductController::class, 'index']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
 
-Route::get('/categories', [CategoryController::class, 'index']);
+Route::get('/categories/page/{page}', [CategoryController::class, 'index']);
 Route::get('/categories/{id}', [CategoryController::class, 'show']);
